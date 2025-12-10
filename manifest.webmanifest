@@ -1,0 +1,14 @@
+{
+  "name": "Sistem Keuangan",
+  "short_name": "SiskeuPro",
+  "description": "Dashboard keuangan pribadi dengan akun, kategori, budget, dan recurring.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#D4AF37",
+  "icons": [
+    { "src": "assets/image/icon/icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/image/icon/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable any" }
+  ]
+}

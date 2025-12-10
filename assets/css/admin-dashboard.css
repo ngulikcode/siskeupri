@@ -1,0 +1,379 @@
+/* Admin Dashboard Styles */
+
+/* Admin Stats Grid */
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color);
+}
+
+.admin-stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), #b8941f);
+    color: #000;
+}
+
+.admin-stat-icon.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.admin-stat-icon.pwa {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.admin-stat-icon.rate {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.admin-stat-content {
+    flex: 1;
+}
+
+.admin-stat-content h4 {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1;
+}
+
+.admin-stat-content small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 0.5rem;
+}
+
+/* Error and Loading States */
+.admin-error-state,
+.admin-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    min-height: 400px;
+}
+
+.admin-error-state h3 {
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+}
+
+.admin-error-state p {
+    color: var(--text-muted);
+    margin: 0 0 1rem 0;
+    max-width: 500px;
+}
+
+.admin-error-state code {
+    background: var(--bg-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+}
+
+/* Chart Section */
+.admin-chart-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-chart-section h3 {
+    margin: 0 0 1.5rem;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.admin-chart-section canvas {
+    max-height: 300px;
+}
+
+/* Users Section */
+.admin-users-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.admin-users-section .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.admin-users-section h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+/* Users Table */
+.admin-users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.admin-users-table thead {
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.admin-users-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.admin-users-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.admin-users-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.admin-users-table tbody tr:hover {
+    background: var(--bg-secondary);
+}
+
+.admin-users-table code {
+    background: var(--bg-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--primary-color);
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid #22c55e;
+}
+
+.status-badge.inactive {
+    background: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+    border: 1px solid #9ca3af;
+}
+
+/* Admin Dashboard Container */
+#admin-dashboard-section {
+    padding: 0;
+    background: transparent;
+    margin-left: 250px; /* Account for sidebar width */
+    width: calc(100% - 250px);
+}
+
+#admin-dashboard-content {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.page-header-content h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.page-header .btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.page-header .btn-secondary i {
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #admin-dashboard-section {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .page-header .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #admin-dashboard-content {
+        padding: 1rem;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .admin-stat-card {
+        padding: 1rem;
+    }
+
+    .admin-stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .admin-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .admin-users-section .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .admin-users-section .card-header .btn-secondary {
+        width: 100%;
+    }
+
+    .admin-users-table {
+        font-size: 0.75rem;
+    }
+
+    .admin-users-table th,
+    .admin-users-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    /* Make table scrollable on mobile */
+    .admin-users-section {
+        overflow-x: auto;
+    }
+
+    .admin-users-table {
+        min-width: 600px;
+    }
+
+    .admin-chart-section {
+        padding: 1rem;
+    }
+
+    .admin-error-state,
+    .admin-loading {
+        padding: 2rem 1rem;
+        min-height: 300px;
+    }
+}
+
+/* Loading State */
+.admin-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+
+.admin-loading i {
+    font-size: 2rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Empty State */
+.admin-users-section .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}

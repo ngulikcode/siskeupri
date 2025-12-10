@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Relaxed CSP for debugging and map files -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://js.hcaptcha.com https://*.hcaptcha.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://*.hcaptcha.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://*.hcaptcha.com; connect-src 'self' https://bqjwhpqdjazpyiwfbjph.supabase.co https://generativelanguage.googleapis.com https://*.hcaptcha.com https://cdn.jsdelivr.net; frame-src 'self' https://*.hcaptcha.com https://newassets.hcaptcha.com; object-src 'none';">
+        <title>Dashboard Manajemen Keuangan</title>
+        <title>Dashboard Manajemen Keuangan</title>
+        <meta name="theme-color" content="#000000">
+        <link rel="manifest" href="manifest.webmanifest">
+        <link rel="apple-touch-icon" href="assets/image/icon/icon.png">
+        <script>
+            (function () {
+                var isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+                if (! isSecure) {
+                    var ml = document.querySelector('link[rel="manifest"]');
+                    if (ml && ml.parentNode) 
+                        ml.parentNode.removeChild(ml);
+                    
+                }
+            })();
+        </script>
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link
+        rel="stylesheet" href="assets/css/tour.css">
+        <link
+        rel="stylesheet" href="assets/css/attachment.css">
+        <link
+        rel="stylesheet" href="assets/css/analytics.css">
+        <link
+        rel="stylesheet" href="assets/css/admin-dashboard.css">
+        <!-- Google Fonts -->
+        <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+        <!-- Icon -->
+        <link
+        rel="icon" href="assets/image/icon/icon.png">
+        <!-- FontAwesome -->
+        <link
+        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Supabase -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    </head>
+    <body>
+
+        <div
+            id="app">
+            <!-- Auth Section -->
+            <section id="auth-section" class="auth-container">
+                <div class="auth-card">
+                    <h1>Welcome Back</h1>
+                    <p>Track your finance with ease</p>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        
+                        <!-- hCaptcha -->
+                        <div class="h-captcha" data-sitekey="00dee308-9460-41f0-807c-8e0a57aa5a34" style="margin-bottom: 1rem;"></div>
+                        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
+                        <button type="submit" class="btn-primary">Sign In</button>
+                        <button type="button" id="google-login-btn" class="btn-google">
+                            <i class="fab fa-google"></i> Login with Google
+                        </button>
+                        <p class="auth-footer">Don't have an account?
+                            <a href="#" id="toggle-auth">Sign Up</a>
+                        </p>
+                        <div class="action-buttons" style="justify-content:center">
+                            <button type="button" id="forgot-password-btn" class="btn-secondary">Forgot Password</button>
+                            <button type="button" id="magic-link-btn" class="btn-secondary">Login with Magic Link</button>
+                            <button type="button" id="invite-user-btn" class="btn-secondary">Invite User</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="auth-credits">Designed & Developed by
+                    <a href="https://stevencodelabportfolio.netlify.app/" target="_blank" rel="noopener noreferrer">Stevencodelab</a>
+                </div>
+
+                <!-- PWA Install Button -->
+                <button id="pwa-install-btn" class="pwa-install-btn" title="Install App">
+                    <img src="assets/image/icon/icon.png" alt="Install App" class="pwa-icon">
+                    <span class="pwa-tooltip">Install App</span>
+                </button>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="dashboard-container hidden">
+                <aside class="sidebar">
+                    <div class="logo">
+                        <h2>SisKePri</h2>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li class="active">
+                                <a href="#" id="dashboard-nav-btn">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="#" id="analytics-nav-btn">Analytics</a>
+                            </li>
+                            <li>
+                                <a href="#" id="manage-accounts-btn">Accounts</a>
+                            </li>
+                            <li>
+                                <a href="#" id="manage-categories-nav-btn">Categories</a>
+                            </li>
+                            <li>
+                                <a href="#" id="open-guide-btn">Guide</a>
+                            </li>
+                            <li id="admin-menu-item" class="hidden">
+                                <a href="#" id="admin-dashboard-nav-btn">Admin Analytics</a>
+                            </li>
+                            <li class="keep-mobile">
+                                <a href="#" id="theme-toggle-btn">
+                                    <i class="fas fa-sun"></i> Theme
+                                </a>
+                            </li>
+                            <li class="keep-mobile">
+                                <a href="#" id="profile-settings-btn">Profile Settings</a>
+                            </li>
+                            <li class="keep-mobile">
+                                <a href="#" id="logout-btn">Logout</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <main class="main-content">
+                    <div class="top-bar">
+                        <div class="top-bar-left">
+                            <button id="sidebar-toggle" class="btn-icon mobile-only">☰</button>
+                            <h2>Overview</h2>
+                        </div>
+                        <div class="user-info">
+                            <div class="notification-overlay" id="notification-overlay"></div>
+                            <div class="notification-wrapper">
+                                <button id="notification-btn" class="notification-btn" title="Notifications">
+                                    <i class="fa-solid fa-bell"></i>
+                                    <span id="notification-badge" class="notification-badge hidden">0</span>
+                                </button>
+                                <div id="notification-panel" class="notification-panel hidden">
+                                    <div class="notification-header">
+                                        <h4>Notifications</h4>
+                                        <div class="notification-header-actions">
+                                            <button id="mark-all-read-btn" class="btn-link">Mark all as read</button>
+                                            <button id="close-notification-panel-btn" class="btn-icon mobile-only" title="Close">✕</button>
+                                        </div>
+                                    </div>
+                                    <div id="notification-list" class="notification-list">
+                                        <p class="empty-state">No notifications</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="user-profile">
+                                <img id="user-avatar" class="user-avatar" src="" alt="Avatar" style="display: none;" onerror="this.style.display='none'; const placeholder = this.nextElementSibling; if(placeholder) placeholder.style.display='flex';">
+                                <div class="user-avatar-placeholder">
+                                    <span id="user-avatar-initials"></span>
+                                </div>
+                                <span id="user-email"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="account-badges" class="account-badges"></div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card income">
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Total Income</h4>
+                                <p id="total-income">Rp 0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card expense">
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-arrow-trend-down"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Total Expense</h4>
+                                <p id="total-expense">Rp 0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card balance">
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Balance</h4>
+                                <p id="total-balance">Rp 0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card savings" id="savings-card">
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h4>Savings Goal</h4>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">No goal set</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Overview Section -->
+                    <div class="account-overview-card">
+                        <div class="card-header">
+                            <h3>🏦 Account Overview</h3>
+                            <div class="actions">
+                                <button id="open-transfer-modal-btn" class="btn-secondary">Transfer Funds</button>
+                                <button id="manage-accounts-btn-top" class="btn-secondary">Manage Accounts</button>
+                            </div>
+                        </div>
+                        <div id="account-list" class="account-list">
+                            <p class="empty-state">No accounts yet. Click "Manage Accounts" to add.</p>
+                        </div>
+                    </div>
+
+                    <!-- Budget Overview Section -->
+                    <div class="budget-overview-card">
+                        <div class="card-header">
+                            <h3>📊 Budget Overview</h3>
+                            <button id="manage-budgets-btn" class="btn-secondary">Manage Budgets</button>
+                        </div>
+                        <div id="budget-list" class="budget-list">
+                            <p class="empty-state">No budgets set. Click "Manage Budgets" to get started.</p>
+                        </div>
+                    </div>
+
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-tabs">
+                                    <button class="chart-tab active" data-chart="bar">📊 Bar Chart</button>
+                                    <button class="chart-tab" data-chart="line">📈 Line Chart</button>
+                                    <button class="chart-tab" data-chart="pie">🍰 Pie Chart</button>
+                                </div>
+                                <div class="chart-controls">
+                                    <select id="chart-type-select">
+                                        <option value="all" selected>All (Income & Expense)</option>
+                                        <option value="income">Income Only</option>
+                                        <option value="expense">Expense Only</option>
+                                    </select>
+                                    <select id="trend-months" class="hidden">
+                                        <option value="3">Last 3 Months</option>
+                                        <option value="6" selected>Last 6 Months</option>
+                                        <option value="12">Last 12 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-display-area">
+                                <canvas id="financeChart"></canvas>
+                                <canvas id="pieChart" class="hidden"></canvas>
+                                <canvas id="trendChart" class="hidden"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recurring Transactions Overview -->
+                    <div class="recurring-overview-card">
+                        <div class="card-header">
+                            <h3>🔄 Upcoming Recurring Transactions</h3>
+                            <button id="manage-recurring-btn" class="btn-secondary">Manage Recurring</button>
+                        </div>
+                        <div id="recurring-list" class="recurring-list">
+                            <p class="empty-state">No recurring transactions set up.</p>
+                        </div>
+                    </div>
+
+                    <!-- Debt Tracking Overview -->
+                    <div class="debt-overview-card">
+                        <div class="card-header">
+                            <h3>💳 Debt Tracking</h3>
+                            <button id="manage-debts-btn" class="btn-secondary">Manage Debts</button>
+                        </div>
+                        <div id="debt-list" class="debt-list">
+                            <p class="empty-state">No debts tracked. Click "Manage Debts" to add.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-row">
+                        <div class="transaction-form-card">
+                            <h3>Add Transaction</h3>
+                            <form id="transaction-form">
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" name="type" value="income" checked>
+                                            Income</label>
+                                        <label><input type="radio" name="type" value="expense">
+                                            Expense</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" id="amount" placeholder="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <div class="category-input-group">
+                                        <select id="category" required>
+                                            <option value="">Select Category</option>
+                                        </select>
+                                        <button type="button" id="manage-categories-btn" class="btn-icon" title="Manage Categories">⚙️</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" id="date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Account</label>
+                                    <select id="account" required>
+                                        <option value="Uang Tunai">Uang Tunai</option>
+                                        <option value="Bank BCA">Bank BCA</option>
+                                        <option value="E-Wallet (Gopay/OVO)">E-Wallet (Gopay/OVO)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input type="text" id="description" placeholder="Optional note">
+                                </div>
+                                <div class="form-group">
+                                    <label>Attachment (Optional)</label>
+                                    <input type="file" id="attachment" accept="image/*">
+                                    <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 0.25rem;">Max 5MB. Supported: JPG, PNG, GIF, WebP</small>
+                                    <div id="attachment-preview" class="attachment-preview hidden">
+                                        <img id="preview-image" src="" alt="Preview">
+                                        <button type="button" id="remove-attachment-btn" class="btn-icon" title="Remove attachment">✕</button>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary" id="submit-transaction-btn">Add Transaction</button>
+                                    <button type="button" class="btn-secondary hidden" id="cancel-edit-btn">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="recent-transactions-card">
+                            <div class="card-header">
+                                <h3>Recent Transactions</h3>
+                                <div class="actions">
+                                    <select id="download-select" class="btn-secondary">
+                                        <option value="">Download Report</option>
+                                        <option value="csv">Download CSV</option>
+                                        <option value="pdf">Download PDF</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="search-container">
+                                <input type="text" id="search-input" placeholder="Search by description or category..." class="search-input">
+                                <button type="button" id="clear-search-btn" class="btn-icon hidden" title="Clear search">✕</button>
+                            </div>
+                            <div class="filters">
+                                <select id="filter-type">
+                                    <option value="all">All Types</option>
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                </select>
+                                <select id="filter-account">
+                                    <option value="all">All Accounts</option>
+                                    <option value="Uang Tunai">Uang Tunai</option>
+                                    <option value="Bank BCA">Bank BCA</option>
+                                    <option value="E-Wallet (Gopay/OVO)">E-Wallet (Gopay/OVO)</option>
+                                </select>
+                                <input type="date" id="filter-date" title="Select a date to filter, or leave empty to show all dates">
+                            </div>
+                            <div class="table-responsive">
+                                <table id="transactions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Account</th>
+                                            <th>Category</th>
+                                            <th class="hide-on-mobile">Description</th>
+                                            <th>Amount</th>
+                                            <th>Type</th>
+                                            <th class="hide-on-mobile">Attachment</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Rows will be populated by JS -->
+                                    </tbody>
+                                </table>
+                                <div class="pagination">
+                                    <button id="prev-page" class="btn-secondary">Prev</button>
+                                    <span id="page-info">Page 1</span>
+                                    <button id="next-page" class="btn-secondary">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+
+                <!-- Analytics Dashboard -->
+                <div id="analytics-content" class="analytics-content hidden">
+                    <div class="analytics-header">
+                        <h2>📊 Advanced Analytics & Insights</h2>
+                        <button id="export-analytics-btn" class="btn-secondary">Export Report</button>
+                    </div>
+
+                    <!-- Auto-Generated Insights -->
+                    <div id="insights-container" class="insights-container"></div>
+
+                    <!-- Spending Patterns -->
+                    <div class="analytics-card">
+                        <h3>🕒 Spending Patterns</h3>
+                        <div class="patterns-grid">
+                            <div class="pattern-card" id="peak-day-card">
+                                <div class="pattern-label">Peak Spending Day</div>
+                                <div class="pattern-value" id="peak-day-value">-</div>
+                                <div class="pattern-detail" id="peak-day-detail">-</div>
+                            </div>
+                            <div class="pattern-card" id="peak-week-card">
+                                <div class="pattern-label">Peak Spending Week</div>
+                                <div class="pattern-value" id="peak-week-value">-</div>
+                                <div class="pattern-detail" id="peak-week-detail">-</div>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="margin-top: 1.5rem;">
+                            <canvas id="day-spending-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Category Trends -->
+                    <div class="analytics-card">
+                        <h3>📈 Category Trends</h3>
+                        <div id="category-trends-container" class="category-trends-container"></div>
+                        <div class="chart-container" style="margin-top: 1.5rem;">
+                            <canvas id="category-trend-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Predictive Analytics -->
+                    <div class="analytics-card">
+                        <h3>🔮 Predictive Analytics</h3>
+                        <div class="prediction-container">
+                            <div class="prediction-card">
+                                <div class="prediction-label">Next Month Prediction</div>
+                                <div class="prediction-value" id="prediction-value">-</div>
+                                <div class="prediction-range" id="prediction-range">-</div>
+                                <div class="prediction-confidence" id="prediction-confidence">-</div>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="margin-top: 1.5rem;">
+                            <canvas id="prediction-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Period Comparison -->
+                    <div class="analytics-card">
+                        <h3>📅 Period Comparison</h3>
+                        <div class="comparison-controls">
+                            <select id="comparison-type">
+                                <option value="mom">Month over Month</option>
+                                <option value="yoy">Year over Year</option>
+                            </select>
+                        </div>
+                        <div id="comparison-container" class="comparison-container"></div>
+                        <div class="chart-container" style="margin-top: 1.5rem;">
+                            <canvas id="comparison-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard -->
+                <div id="admin-dashboard-section" class="content-section hidden">
+                    <div class="page-header">
+                        <div class="page-header-content">
+                            <h2>🔐 Admin Analytics Dashboard</h2>
+                            <p class="page-subtitle">Monitor user activity and system metrics</p>
+                        </div>
+                        <button id="refresh-admin-dashboard-btn" class="btn-secondary">
+                            <i class="fa-solid fa-rotate"></i> Refresh Data
+                        </button>
+                    </div>
+                    <div id="admin-dashboard-content"></div>
+                </div>
+
+                <nav class="bottom-nav" id="bottom-nav">
+                    <button class="bottom-nav-item" id="bn-dashboard" title="Dashboard">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button class="bottom-nav-item" id="bn-analytics" title="Analytics">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </button>
+                    <button class="bottom-nav-item" id="bn-accounts" title="Accounts">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>Accounts</span>
+                    </button>
+                    <button class="bottom-nav-item" id="bn-categories" title="Categories">
+                        <i class="fa-solid fa-tags"></i>
+                        <span>Categories</span>
+                    </button>
+                    <button class="bottom-nav-item" id="bn-budgets" title="Budgets">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Budgets</span>
+                    </button>
+                    <!-- <button class="bottom-nav-item" id="bn-recurring" title="Recurring">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Recurring</span>
+                    </button> -->
+                    <button class="bottom-nav-item" id="bn-guide" title="Guide">
+                        <i class="fa-solid fa-question"></i>
+                        <span>Guide</span>
+                    </button>
+                </nav>
+            </section>
+        </div>
+
+        <!-- Profile Settings Modal -->
+        <div id="profile-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Profile Settings</h3>
+                    <button type="button" id="close-profile-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="profile-full-name" placeholder="e.g. John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="profile-new-password" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="profile-confirm-password" placeholder="Confirm new password">
+                        </div>
+                        <button type="submit" class="btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="reset-password-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Reset Password</h3>
+                    <button type="button" id="close-reset-password-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="reset-password-form">
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="reset-new-password" placeholder="Enter new password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="reset-confirm-password" placeholder="Confirm new password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Reset Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounts Management Modal -->
+        <div id="accounts-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Manage Accounts</h3>
+                    <button type="button" id="close-accounts-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-account-form">
+                        <div class="form-group">
+                            <label>Account Name</label>
+                            <input type="text" id="new-account-name" placeholder="e.g. Bank BCA" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Opening Balance (Rp)</label>
+                            <input type="number" id="new-account-opening-balance" placeholder="0" min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="new-account-default">
+                                Set as default account</label>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Account</button>
+                    </form>
+                    <div class="categories-section">
+                        <h4>Accounts</h4>
+                        <div id="accounts-list-modal" class="budget-list-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfer Modal -->
+        <div id="transfer-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Transfer Funds</h3>
+                    <button type="button" id="close-transfer-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="transfer-form">
+                        <div class="form-group">
+                            <label>From Account</label>
+                            <select id="transfer-from" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>To Account</label>
+                            <select id="transfer-to" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (Rp)</label>
+                            <input type="number" id="transfer-amount" placeholder="0" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="transfer-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="transfer-description" placeholder="Optional note">
+                        </div>
+                        <button type="submit" class="btn-primary">Transfer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Management Modal -->
+        <div id="category-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Manage Categories</h3>
+                    <button type="button" id="close-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-category-form">
+                        <div class="form-group">
+                            <label>Category Type</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="category-type" value="income" checked>
+                                    Income</label>
+                                <label><input type="radio" name="category-type" value="expense">
+                                    Expense</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Category Name</label>
+                            <input type="text" id="new-category-name" placeholder="e.g. Freelance" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Category</button>
+                    </form>
+
+                    <div class="categories-section">
+                        <h4>Income Categories</h4>
+                        <div id="income-categories-list" class="category-list"></div>
+
+                        <h4>Expense Categories</h4>
+                        <div id="expense-categories-list" class="category-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide Modal -->
+        <div id="guide-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Panduan Penggunaan</h3>
+                    <button type="button" id="close-guide-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <ol class="guide-list">
+                        <li>Login atau Sign Up terlebih dahulu.</li>
+                        <li>Kelola akun di menu Accounts dan set akun default.</li>
+                        <li>Kelola kategori Income/Expense di menu Categories.</li>
+                        <li>Set anggaran bulanan (Budgets) untuk kategori Expense.</li>
+                        <li>Tambah transaksi: pilih tipe, jumlah, kategori, akun, tanggal, deskripsi.</li>
+                        <li>Pakai Filter, Pencarian, dan badges akun untuk analisis cepat.</li>
+                        <li>Kelola Recurring untuk transaksi berulang otomatis sesuai frekuensi.</li>
+                        <li>Gunakan Transfer Funds untuk memindahkan dana antar akun.</li>
+                        <li>Unduh laporan CSV/PDF dari bagian Recent Transactions.</li>
+                        <li>Analisis laporan keuangan dengan fitur Analytics.</li>
+                        <li>Download Aplikasi via Halaman Login atau Pop Up yang muncul.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Management Modal -->
+        <div id="budget-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Manage Budgets</h3>
+                    <button type="button" id="close-budget-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-budget-form">
+                        <div class="form-group">
+                            <label>Month</label>
+                            <input type="month" id="budget-month" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category (Expense only)</label>
+                            <select id="budget-category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Budget Limit (Rp)</label>
+                            <input type="number" id="budget-amount" placeholder="2000000" min="0" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Set Budget</button>
+                    </form>
+
+                    <div class="budgets-section">
+                        <h4>Current Budgets</h4>
+                        <div id="budgets-list-modal" class="budget-list-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recurring Transactions Modal -->
+        <div id="recurring-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Manage Recurring Transactions</h3>
+                    <button type="button" id="close-recurring-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-recurring-form">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="recurring-type" value="income" checked>
+                                    Income</label>
+                                <label><input type="radio" name="recurring-type" value="expense">
+                                    Expense</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="recurring-category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (Rp)</label>
+                            <input type="number" id="recurring-amount" placeholder="5000000" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="recurring-description" placeholder="e.g. Monthly Salary">
+                        </div>
+                        <div class="form-group">
+                            <label>Frequency</label>
+                            <select id="recurring-frequency" required>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly" selected>Monthly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="day-of-month-group">
+                            <label>Day of Month (1-31)</label>
+                            <input type="number" id="recurring-day-month" min="1" max="31" value="1">
+                        </div>
+                        <div class="form-group hidden" id="day-of-week-group">
+                            <label>Day of Week</label>
+                            <select id="recurring-day-week">
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="recurring-start-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date (Optional)</label>
+                            <input type="date" id="recurring-end-date">
+                        </div>
+                        <button type="submit" class="btn-primary">Add Recurring Transaction</button>
+                    </form>
+
+                    <div class="recurring-section">
+                        <h4>Active Recurring Transactions</h4>
+                        <div id="recurring-list-modal" class="recurring-list-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Savings Goals Modal -->
+        <div id="savings-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Manage Savings Goals</h3>
+                    <button type="button" id="close-savings-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-savings-form">
+                        <div class="form-group">
+                            <label>Month</label>
+                            <input type="month" id="savings-month" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Type</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="savings-target-type" value="percentage" id="savings-type-percentage" checked>
+                                    Percentage of Income</label>
+                                <label><input type="radio" name="savings-target-type" value="fixed" id="savings-type-fixed">
+                                    Fixed Amount</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="savings-value-label">Target Percentage (%)</label>
+                            <input type="number" id="savings-target-value" placeholder="20" min="0" step="0.1" required>
+                            <small id="savings-value-placeholder" style="color: var(--text-muted); font-size: 0.75rem;">e.g., 20 (means 20% of income)</small>
+                        </div>
+                        <button type="submit" class="btn-primary">Set Savings Goal</button>
+                    </form>
+
+                    <div class="savings-section" style="margin-top: 2rem;">
+                        <h4>Saved Goals</h4>
+                        <div id="savings-list-modal" class="budget-list-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debt Management Modal -->
+        <div id="debt-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Manage Debts</h3>
+                    <button type="button" id="close-debt-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-debt-form">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="debt-type" value="debt" checked>
+                                    Utang (Debt)</label>
+                                <label><input type="radio" name="debt-type" value="credit">
+                                    Piutang (Credit)</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="debt-name" placeholder="e.g. Bank ABC, John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Amount (Rp)</label>
+                            <input type="number" id="debt-total-amount" placeholder="5000000" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="debt-start-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date (Optional)</label>
+                            <input type="date" id="debt-due-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Interest Rate (% per year, Optional)</label>
+                            <input type="number" id="debt-interest-rate" placeholder="0" min="0" max="100" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Frequency</label>
+                            <select id="debt-payment-frequency">
+                                <option value="one_time">One Time</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly" selected>Monthly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Account</label>
+                            <select id="debt-account">
+                                <option value="">Select Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea id="debt-notes" rows="3" placeholder="Additional notes..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Debt</button>
+                    </form>
+
+                    <div class="debts-section">
+                        <h4>Current Debts</h4>
+                        <div id="debts-list-modal" class="debt-list-modal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debt Payment Modal -->
+        <div id="debt-payment-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Record Payment</h3>
+                    <button type="button" id="close-debt-payment-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-debt-payment-form">
+                        <div class="form-group">
+                            <label>Debt</label>
+                            <input type="text" id="payment-debt-name" readonly>
+                            <input type="hidden" id="payment-debt-id">
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Amount (Rp)</label>
+                            <input type="number" id="payment-amount" placeholder="1000000" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Date</label>
+                            <input type="date" id="payment-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Account</label>
+                            <select id="payment-account">
+                                <option value="">Select Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Create Transaction</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="create-transaction" value="yes" checked>
+                                    Yes</label>
+                                <label><input type="radio" name="create-transaction" value="no">
+                                    No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea id="payment-notes" rows="3" placeholder="Payment notes..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Record Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attachment Viewer Modal -->
+        <div id="attachment-modal" class="modal-overlay hidden">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 id="attachment-title">Attachment</h3>
+                    <button type="button" id="close-attachment-modal-btn" class="btn-icon">✕</button>
+                </div>
+                <div class="modal-body">
+                    <img id="attachment-full-image" src="" alt="Attachment" style="max-width: 100%; height: auto; border-radius: 0.5rem;">
+                </div>
+            </div>
+        </div>
+
+    <!-- AI Assistant Widget -->
+    <div id="ai-widget-container">
+        <span class="ai-tooltip">AI Assistant</span>
+        <!-- Chat Button -->
+        <button id="ai-chat-toggle" class="ai-chat-btn" aria-label="Open Financial Assistant">
+            <i class="fas fa-robot"></i>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="ai-chat-window" class="ai-chat-window hidden">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <i class="fas fa-robot"></i>
+                    <span>Financial AI Assistant</span>
+                </div>
+                <div class="chat-controls">
+                    <button id="ai-close-btn" title="Close"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <div class="ai-message">
+                    Halo! Saya Asisten Keuangan pribadi Anda. Saya dapat menganalisis anggaran dan pengeluaran Anda saat ini untuk memberikan saran yang dipersonalisasi. Ada yang bisa saya bantu hari ini?
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <textarea id="chat-input" placeholder="Tanya tentang anggaran, tabungan, atau pengeluaran..." rows="1"></textarea>
+                <button id="send-message-btn" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+        <script src="assets/js/env.js"></script>
+        <script src="assets/js/theme.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/js/auth.js"></script>
+        <script src="assets/js/notifications.js"></script>
+        <script src="assets/js/charts-enhanced.js"></script>
+        <script src="assets/js/accounts.js"></script>
+        <script src="assets/js/budgets.js"></script>
+        <script src="assets/js/recurring.js"></script>
+        <script src="assets/js/savings.js"></script>
+        <script src="assets/js/debts.js"></script>
+        <script src="assets/js/attachment.js"></script>
+        <script src="assets/js/analytics.js"></script>
+        <script src="assets/js/analytics-ui.js"></script>
+        <script src="assets/js/analytics-tracking.js"></script>
+        <script src="assets/js/admin-dashboard.js"></script>
+        <script src="assets/js/app.js"></script>
+        <script src="assets/js/advanced-listeners.js"></script>
+        <script src="assets/js/admin-listeners.js"></script>
+        <script src="assets/js/ai-assistant.js"></script>
+        <script src="assets/js/tour.js"></script>
+        <script>
+            (function () {
+                var isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+                if ('serviceWorker' in navigator && isSecure) {
+                    window.addEventListener('load', function () {
+                        navigator.serviceWorker.register('sw.js').catch(function (err) {
+                            console.error('SW reg failed', err);
+                        });
+                    });
+                }
+            })();
+        </script>
+    </body>
+</html>

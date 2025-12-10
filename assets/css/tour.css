@@ -1,0 +1,342 @@
+/* Tour System Styles - Enhanced Responsive */
+
+/* Tour Button */
+#start-tour-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #D4AF37 0%, #B5952F 100%);
+    color: #000000;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    z-index: 100;
+    position: relative;
+}
+
+#start-tour-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, #E5C047 0%, #C6A63F 100%);
+}
+
+#start-tour-btn:active {
+    transform: translateY(0);
+}
+
+/* Tour Overlay */
+.tour-overlay-element {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Tour Highlight */
+.tour-highlight-element {
+    animation: pulse 2s infinite;
+}
+
+/* Tour Tooltip */
+.tour-tooltip-element {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7), 0 0 0 9999px rgba(0, 0, 0, 0.75);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(212, 175, 55, 0), 0 0 0 9999px rgba(0, 0, 0, 0.75);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Allow desktop to scroll during tour */
+body.tour-active {
+    overflow: auto;
+    position: relative;
+}
+
+/* Smooth Scrolling for Tour */
+html.tour-active {
+    scroll-behavior: smooth;
+}
+
+/* Tour Buttons Hover Effects */
+.tour-btn-prev:hover:not(:disabled) {
+    background: #27272a !important;
+}
+
+.tour-btn-next:hover {
+    background: #E5C047 !important;
+    transform: translateX(2px);
+}
+
+.tour-btn-skip:hover {
+    color: #ffffff !important;
+}
+
+/* Accessibility - Focus States */
+button[onclick*="appTour"]:focus {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
+}
+
+/* Ensure tour elements are always on top */
+.tour-overlay-element {
+    z-index: 9998 !important;
+}
+
+.tour-highlight-element {
+    z-index: 9999 !important;
+}
+
+.tour-tooltip-element {
+    z-index: 10000 !important;
+}
+
+/* Mobile Responsive Tour Styles */
+@media (max-width: 768px) {
+    #start-tour-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+        gap: 0.25rem;
+    }
+
+    /* Mobile tooltip always at bottom */
+    .tour-tooltip-element {
+        position: fixed !important;
+        bottom: 1rem !important;
+        left: 1rem !important;
+        right: 1rem !important;
+        top: auto !important;
+        max-width: calc(100vw - 2rem) !important;
+        width: calc(100vw - 2rem) !important;
+        transform: none !important;
+        padding: 1rem !important;
+    }
+
+    /* Mobile highlight adjustments */
+    .tour-highlight-element {
+        border-width: 3px;
+    }
+
+    /* Mobile button styles in tooltip */
+    .tour-tooltip-element button {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Adjust overlay for mobile */
+    .tour-overlay-element {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Make sure highlighted elements are visible on mobile */
+    body.tour-active {
+        overflow: auto !important;
+        position: relative !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #start-tour-btn {
+        padding: 0.375rem 0.625rem;
+        font-size: 0.7rem;
+    }
+
+    .tour-tooltip-element {
+        padding: 0.875rem !important;
+        border-radius: 8px !important;
+    }
+
+    /* Even smaller buttons for small screens */
+    .tour-tooltip-element button {
+        font-size: 0.7rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .tour-tooltip-element {
+        max-height: 60vh;
+        overflow-y: auto;
+        bottom: 0.5rem !important;
+    }
+
+    body.tour-active {
+        overflow: hidden !important;
+        position: fixed !important;
+    }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 481px) and (max-width: 768px) {
+    .tour-tooltip-element {
+        max-width: 500px !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+    }
+}
+
+/* Dark Mode Tour Adjustments */
+@media (prefers-color-scheme: dark) {
+    .tour-tooltip-element {
+        background: #0a0a0a !important;
+        border-color: #1a1a1a !important;
+    }
+}
+
+/* Print - Hide Tour Elements */
+@media print {
+    #start-tour-btn,
+    .tour-overlay-element,
+    .tour-highlight-element,
+    .tour-tooltip-element {
+        display: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .tour-highlight-element {
+        border-width: 5px;
+        border-color: #FFD700;
+    }
+
+    #start-tour-btn {
+        border: 2px solid #000000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .tour-overlay-element,
+    .tour-highlight-element,
+    .tour-tooltip-element,
+    #start-tour-btn {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    html.tour-active {
+        scroll-behavior: auto;
+    }
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .tour-tooltip-element {
+        position: fixed !important;
+    }
+
+    body.tour-active {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+    }
+}
+
+/* Ensure buttons are tappable on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .tour-tooltip-element button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Sidebar visibility during tour on mobile */
+@media (max-width: 768px) {
+    body.tour-active .sidebar {
+        z-index: 9997;
+    }
+
+    body.tour-active .sidebar.active {
+        z-index: 10001;
+    }
+
+    /* Bottom Nav visibility during tour */
+    body.tour-active .bottom-nav {
+        z-index: 9997;
+    }
+
+    /* Ensure bottom nav is visible above overlay when highlighted */
+    .tour-highlight-element + * .bottom-nav,
+    body.tour-active .bottom-nav.tour-highlighted {
+        z-index: 10001 !important;
+    }
+
+    /* Tooltip positioning when bottom nav is highlighted */
+    body.tour-active .tour-tooltip-element.above-bottom-nav {
+        bottom: 80px !important;
+        max-height: calc(100vh - 180px) !important;
+    }
+}
+
+/* Improve visibility of close button */
+.tour-tooltip-element button[onclick*="end"] {
+    z-index: 10001;
+    background: rgba(156, 163, 175, 0.1);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.tour-tooltip-element button[onclick*="end"]:hover {
+    background: rgba(156, 163, 175, 0.2);
+    color: #ffffff;
+}
+
+/* Loading state for tour */
+.tour-loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Tour step counter styling */
+.tour-tooltip-element > div:nth-child(2) {
+    user-select: none;
+}
+
+/* Improve touch target sizes */
+@media (max-width: 768px) {
+    .tour-tooltip-element button {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+
+    .tour-tooltip-element button[onclick*="end"] {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1.25rem !important;
+    }
+}
